@@ -1,0 +1,2053 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Thumbnail Designer | Portfolio</title>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES (ANDROID 15 MATERIAL DESIGN)
+           ========================================================================== */
+        :root {
+            /* Dark Theme (Default) */
+            --bg-color: #0D0F12;
+            --surface-color: #1A1D22;
+            --surface-hover: #242830;
+            --primary-color: #4CAF50;
+            --primary-hover: #45a049;
+            --text-main: #FFFFFF;
+            --text-muted: #B0B3B8;
+            --divider: #2A2E35;
+            
+            /* Material Elevations (Flat/Soft) */
+            --elevation-1: 0 2px 4px rgba(0,0,0,0.2);
+            --elevation-2: 0 4px 8px rgba(0,0,0,0.3);
+            --elevation-3: 0 8px 16px rgba(0,0,0,0.4);
+            
+            /* Radii */
+            --radius-sm: 12px;
+            --radius-md: 16px;
+            --radius-lg: 20px;
+            --radius-pill: 100px;
+
+            /* Typography */
+            --font-heading: 'Montserrat', sans-serif;
+            --font-body: 'Poppins', sans-serif;
+            
+            /* App feel */
+            --app-bottom-space: 80px;
+        }
+
+        [data-theme="light"] {
+            --bg-color: #F8F9FA;
+            --surface-color: #FFFFFF;
+            --surface-hover: #F0F2F5;
+            --primary-color: #388E3C;
+            --primary-hover: #2E7D32;
+            --text-main: #121212;
+            --text-muted: #5F6368;
+            --divider: #E0E0E0;
+            
+            --elevation-1: 0 1px 3px rgba(0,0,0,0.08);
+            --elevation-2: 0 4px 6px rgba(0,0,0,0.06);
+            --elevation-3: 0 10px 15px rgba(0,0,0,0.05);
+        }
+
+        /* ==========================================================================
+           RESET & BASE
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            padding-bottom: var(--app-bottom-space); /* Mobile App Feel */
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        h1, h2, h3, h4, h5, h6 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            line-height: 1.2;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            display: block;
+            border-radius: var(--radius-sm);
+        }
+
+        /* Container */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            font-size: 1.1rem;
+        }
+
+        section {
+            padding: 5rem 0;
+            position: relative;
+        }
+
+        /* ==========================================================================
+           COMPONENTS
+           ========================================================================== */
+        /* Outline Pill Buttons */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 32px;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 1rem;
+            border: 2px solid var(--primary-color);
+            border-radius: var(--radius-pill);
+            background: transparent;
+            color: var(--primary-color);
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            gap: 8px;
+        }
+
+        .btn:hover, .btn:focus {
+            background: var(--primary-color);
+            color: #FFFFFF;
+            transform: scale(0.98);
+        }
+
+        .btn:active {
+            transform: scale(0.95);
+        }
+
+        .btn-solid {
+            background: var(--primary-color);
+            color: #FFFFFF;
+        }
+
+        .btn-solid:hover {
+            background: var(--primary-hover);
+            border-color: var(--primary-hover);
+        }
+
+        /* Surface Cards */
+        .card {
+            background: var(--surface-color);
+            border-radius: var(--radius-md);
+            padding: 2rem;
+            box-shadow: var(--elevation-1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--elevation-2);
+        }
+
+        /* Scroll Reveal Utility */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ==========================================================================
+           1. NAVBAR
+           ========================================================================== */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--surface-color);
+            box-shadow: var(--elevation-1);
+            z-index: 1000;
+            transition: background 0.3s ease;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 70px;
+        }
+
+        .logo {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-links a {
+            font-weight: 500;
+            color: var(--text-muted);
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary-color);
+        }
+
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: var(--primary-color);
+            border-radius: 2px;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* Theme Toggle */
+                /* Theme Toggle (Perfect Circle Fix) */
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            color: var(--text-main);
+            font-size: 1.2rem;
+            cursor: pointer;
+            
+            /* Yahan Fix Kiya: Height aur Width ek barabar di */
+            width: 45px;
+            height: 45px;
+            padding: 0; /* Purani padding hata di */
+            
+            /* Icon ko ekdum Center mein rakhne ke liye */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            border-radius: 50%; /* 100% Gol */
+            transition: background 0.3s ease, transform 0.2s ease;
+        }
+
+        .theme-toggle:hover {
+            background: var(--surface-hover);
+            transform: scale(1.05); /* Hover par thoda sa bada (pop) hoga */
+        }
+
+
+                /* ==========================================================================
+           HAMBURGER MENU (SMOOTH ANIMATION FIX)
+           ========================================================================== */
+        .hamburger {
+            display: none; /* Desktop pe chhupa rahega */
+            background: none;
+            border: none;
+            cursor: pointer;
+            width: 28px;
+            height: 20px;
+            position: relative;
+            z-index: 1001; /* Menu ke upar rakhne ke liye */
+        }
+
+        .hamburger .bar {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-main);
+            border-radius: 3px;
+            left: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); /* Bouncy smooth animation */
+        }
+
+        /* 3 lines ki perfect positioning */
+        .hamburger .bar:nth-child(1) { top: 0; }
+        .hamburger .bar:nth-child(2) { top: 50%; transform: translateY(-50%); }
+        .hamburger .bar:nth-child(3) { bottom: 0; }
+
+        /* Jab menu open ho (X Animation) */
+        .hamburger.active .bar:nth-child(1) {
+            top: 50%;
+            transform: translateY(-50%) rotate(45deg); /* Pheli line niche aake ghumegi */
+        }
+
+        .hamburger.active .bar:nth-child(2) {
+            opacity: 0; /* Beech wali line gayab ho jayegi */
+            transform: scaleX(0);
+        }
+
+        .hamburger.active .bar:nth-child(3) {
+            bottom: 50%;
+            transform: translateY(50%) rotate(-45deg); /* Teesri line upar aake ghumegi */
+        }
+
+
+        /* ==========================================================================
+           2. HERO SECTION
+           ========================================================================== */
+        .hero {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding-top: 70px;
+            overflow: hidden;
+            position: relative;
+        }
+
+                .hero-content {
+            z-index: 10;
+            max-width: 900px; /* Container ko thoda lamba kiya taki text ko jagah mile */
+        }
+
+        .hero h1 {
+            font-size: 3.2rem; /* 4rem se chhota kiya taki line perfect baithe */
+            line-height: 1.2;
+            margin-bottom: 1.2rem;
+            background: linear-gradient(to right, var(--text-main), var(--primary-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.15rem; /* Paragraph ko thoda compact kiya */
+            line-height: 1.6;
+            max-width: 700px; /* Paragraph ko ek perfect width di taki zyada lamba na faile */
+            margin: 0 auto 2.5rem auto; /* Text ko center mein lock karne ke liye */
+            color: var(--text-muted);
+        }
+
+
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+        }
+
+        /* Hero Slider Background */
+        .hero-slider {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            opacity: 0.15;
+            pointer-events: none;
+        }
+
+        .hero-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1s ease-in-out;
+        }
+
+        .hero-slide.active {
+            opacity: 1;
+        }
+
+        /* Scroll Indicator */
+        .scroll-down {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: var(--text-muted);
+            font-size: 2rem;
+            animation: bounce 2s infinite;
+            z-index: 10;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) translateX(-50%); }
+            40% { transform: translateY(-20px) translateX(-50%); }
+            60% { transform: translateY(-10px) translateX(-50%); }
+        }
+
+        /* ==========================================================================
+           3. ABOUT SECTION
+           ========================================================================== */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        /* --- Naya Animated Profile Section --- */
+
+/* Photo ke bahar ka dabba jo photo ko gol (round) rakhega */
+.profile-container {
+    width: 250px; /* Aap apne hisab se size adjust kar sakte hain */
+    height: 250px;
+    margin: 0 auto; /* Center karne ke liye */
+    border-radius: 50%; /* Ekdum gol shaper */
+    overflow: hidden; /* Photo bahar na nikle */
+    
+    /* UI Primary Green color ka border lagaya */
+    border: 6px solid var(--primary-color);
+    box-shadow: var(--elevation-3);
+    
+    /* Animation connection - Slow float effect */
+    animation: profileFloat 6s infinite ease-in-out;
+}
+
+/* Actual photo ki styling */
+.profile-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Photo stretch nahi hogi, adjust ho jayegi */
+    transition: transform 0.3s ease;
+}
+
+/* Photo jab hover karein toh chhota sa effect */
+.profile-container:hover .profile-img {
+    transform: scale(1.05);
+}
+
+
+        .about-text h3 {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .about-points {
+            margin-bottom: 2rem;
+        }
+
+        .about-points li {
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--text-main);
+        }
+
+        .about-points i {
+            color: var(--primary-color);
+        }
+
+        /* ==========================================================================
+   4. SKILLS SECTION (PERFECTED)
+   ========================================================================== */
+.skills-grid {
+    display: grid;
+    /* auto-fit se mobile pe 1 column aur desktop pe apne aap 2 column ban jayenge */
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+}
+
+.skill-item {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-radius: var(--radius-md);
+    background: var(--surface-color);
+    box-shadow: var(--elevation-1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin-top: 0;
+}
+
+.skill-item:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--elevation-2);
+}
+
+.skill-logo {
+    width: 55px;
+    height: 55px;
+    object-fit: contain;
+    margin-bottom: 0;
+    /* Chhoti si glow/shadow logo ke piche taki premium lage */
+    filter: drop-shadow(0 4px 6px rgba(0,0,0,0.2)); 
+}
+
+.skill-content {
+    flex: 1; /* Text aur bar ko baaki ki poori jagah lene dega */
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px; /* Thoda sa breathing space */
+    font-weight: 600; /* Text ko thoda bold kiya */
+    font-size: 1.05rem;
+}
+
+.skill-bar-bg {
+    height: 8px; /* App jaisa sleek progress bar */
+    background: var(--divider);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.skill-bar-fill {
+    height: 100%;
+    background: var(--primary-color);
+    border-radius: 4px;
+    width: 0; /* JS isko automatically scroll pe fill karega */
+    transition: width 1.5s cubic-bezier(0.16, 1, 0.3, 1); /* Ekdum smooth animation */
+}
+
+
+        /* --- Idea 3: Smart Multi-Column Grid --- */
+.portfolio-grid {
+    display: grid;
+    /* Mobile par 2 columns dikhenge (Aaju-Baaju) */
+    grid-template-columns: repeat(2, 1fr); 
+    gap: 12px; /* Images ke beech ka gap */
+    padding: 10px 0;
+}
+
+.my-custom-thumb {
+    width: 100%;
+    height: auto;
+    aspect-ratio: 2861 / 3264;
+    object-fit: cover;
+    border-radius: 0; /* Curve hata diya, ab grid mein bhi corners ekdum sharp honge */
+    border: 2px solid var(--primary-color); /* UI ka Primary Green color ka border laga diya */
+    box-shadow: var(--elevation-1);
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Hover effect ko smooth karne ke liye */
+}
+
+.my-custom-thumb:hover {
+    transform: scale(1.03); /* Hover karne par image smoothly thodi aage (zoom) aayegi */
+    box-shadow: var(--elevation-3);
+}
+
+
+/* Tablet aur Desktop ke liye Smart Adjustments */
+@media (min-width: 768px) {
+    .portfolio-grid {
+        /* Badi screen par 4 columns dikhenge */
+        grid-template-columns: repeat(4, 1fr); 
+        gap: 20px;
+    }
+}
+
+
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.9);
+            z-index: 2000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+               .modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 0; /* Curve hata diya, ab corners ekdum sharp (full) honge */
+            border: 3px solid var(--primary-color); /* UI ka Primary Green color ka border laga diya */
+            box-shadow: var(--elevation-3);
+            
+            /* Smooth Animation ke liye Setup */
+            transform: scale(0.8); /* Shuru mein image thodi chhoti rahegi */
+            transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); /* Ekdum smooth aur stylish zoom effect */
+        }
+
+        /* Jab modal open hoga, tab image smoothly badi (scale 1) ho jayegi */
+        .modal.active .modal-content {
+            transform: scale(1);
+        }
+
+
+        .modal-close {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: #fff;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+
+        /* ==========================================================================
+           6. SCROLL STORY TIMELINE
+           ========================================================================== */
+        .timeline {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            background-color: var(--divider);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -2px;
+            border-radius: 2px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            background-color: inherit;
+            width: 50%;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-item::after {
+    content: '';
+    position: absolute;
+    box-sizing: border-box; /* YE LINE SAB THEEK KAR DEGI! Dot ka size fix rakhegi */
+    width: 20px;
+    height: 20px;
+    background-color: var(--primary-color);
+    border: 4px solid var(--surface-color);
+    top: 15px;
+    border-radius: 50%;
+    z-index: 1;
+    box-shadow: var(--elevation-1);
+    
+    /* Desktop Left side ka perfect center */
+    right: -10px; 
+}
+
+.left { left: 0; }
+.right { left: 50%; }
+
+/* Desktop Right side ka perfect center */
+.right::after { left: -10px; }
+
+
+        .timeline-content {
+            padding: 20px;
+            background-color: var(--surface-color);
+            position: relative;
+            border-radius: var(--radius-md);
+            box-shadow: var(--elevation-1);
+        }
+
+        /* ==========================================================================
+           7. PRICING SECTION
+           ========================================================================== */
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .pricing-card {
+            text-align: center;
+            border: 2px solid transparent;
+            position: relative;
+        }
+
+        .pricing-card.highlight {
+            border-color: var(--primary-color);
+            transform: scale(1.05);
+            z-index: 2;
+        }
+
+        .pricing-card.highlight::before {
+            content: 'Most Popular';
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary-color);
+            color: #fff;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+
+        .price {
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--text-main);
+            margin: 1.5rem 0;
+            font-family: var(--font-heading);
+        }
+
+        .price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+        }
+
+        .pricing-features {
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .pricing-features i {
+            color: var(--primary-color);
+        }
+
+       /* ==========================================================================
+   8. REVIEWS SECTION (PREMIUM DESIGN)
+   ========================================================================== */
+.reviews-slider {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 2rem;
+    padding: 1rem 0 2rem;
+    scrollbar-width: thin; 
+    scrollbar-color: var(--primary-color) transparent;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    cursor: grab;
+}
+
+.reviews-slider::-webkit-scrollbar {
+    height: 4px;
+    display: block; 
+}
+.reviews-slider::-webkit-scrollbar-thumb {
+    background: var(--primary-color);
+    border-radius: 10px;
+}
+
+/* Naya Structured Card Design */
+.review-card {
+    min-width: 320px;
+    max-width: 350px;
+    scroll-snap-align: center; 
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
+    padding: 2rem;
+    
+    /* Yahan fix kiya hai: Theme ke hisaab se color badlega */
+    background: var(--surface-color); 
+    border: 1px solid var(--divider); 
+    
+    border-radius: var(--radius-lg);
+    box-shadow: var(--elevation-1);
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.review-card:hover {
+    border-color: var(--primary-color); /* Hover pe green border */
+    box-shadow: var(--elevation-2);
+}
+
+
+/* Stars Design */
+.review-card .stars {
+    font-size: 1.1rem;
+    letter-spacing: 2px;
+    margin-bottom: 1rem;
+}
+
+/* Review Text */
+.review-card p {
+    font-size: 1.05rem;
+    line-height: 1.6;
+    color: var(--text-main);
+    font-style: italic; /* Quote jaisa feel */
+    margin-bottom: 2rem;
+    flex-grow: 1; /* Chhote text ko bhi card bharne ki space dega */
+}
+
+/* Profile Section (Divider ke niche) */
+.reviewer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-top: 1px solid var(--divider); /* Ek clean line */
+    padding-top: 1rem;
+}
+
+/* Profile Avatar */
+.reviewer-img {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--primary-color), #128c6e); /* Green avatar */
+    color: #000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 1.2rem;
+    box-shadow: 0 4px 10px rgba(32, 201, 151, 0.2);
+}
+
+.reviewer-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.reviewer-info strong {
+    font-size: 1.1rem;
+    /* #fff hata kar var(--text-main) kiya taki light mode me dark dikhe */
+    color: var(--text-main); 
+}
+
+
+.reviewer-info span {
+    font-size: 0.85rem;
+    color: var(--primary-color);
+}
+
+
+        /* ==========================================================================
+           9. STATS SECTION
+           ========================================================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: var(--primary-color);
+            font-family: var(--font-heading);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+        }
+
+        
+
+        /* ==========================================================================
+           11. CONTACT SECTION
+           ========================================================================== */
+        .contact-wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+                /* --- CONTACT ALIGNMENT FIX --- */
+        .contact-item {
+            display: flex;
+            align-items: center; /* Icons ko center rakhega */
+            gap: 20px; /* Thoda gap badhaya jisse ghich-pich na ho */
+            width: 100%;
+        }
+
+        .contact-item i {
+            flex-shrink: 0; /* IMPORTANT: Text lamba hone par Icon chhota/dabe nahi hoga */
+            width: 50px;
+            height: 50px;
+            background: var(--surface-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            box-shadow: var(--elevation-1);
+        }
+
+        .contact-item > div {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start; /* Text humesha perfect ek line (left) se start hoga */
+            text-align: left;
+            flex: 1; /* Bachi hui puri width text ko de di */
+            overflow: hidden; /* Text bahar nahi bhagega */
+        }
+
+        .contact-item > div h4 {
+            margin-bottom: 2px;
+        }
+
+        .contact-item > div a {
+            word-wrap: break-word; /* Agar email zyada lamba hua toh safely niche break ho jayega, line kharab nahi karega */
+            display: block;
+            width: 100%;
+        }
+
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            background: var(--surface-color);
+            border: 2px solid transparent;
+            color: var(--text-main);
+            font-family: var(--font-body);
+            transition: border-color 0.3s, box-shadow 0.3s;
+            box-shadow: var(--elevation-1);
+        }
+
+        /* --- REVIEW DROPDOWN PREMIUM FIX --- */
+        select.custom-select {
+            width: 100%;
+            padding: 15px;
+            border-radius: var(--radius-md);
+            background-color: var(--surface-color) !important;
+            border: 2px solid transparent;
+            color: var(--text-main) !important;
+            font-family: var(--font-body);
+            box-shadow: var(--elevation-1);
+            cursor: pointer;
+            appearance: none;
+            -webkit-appearance: none;
+            /* Niche default teer (arrow) ki jagah apna custom Green Arrow lagaya hai */
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%234CAF50%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.4-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 15px auto;
+            margin-bottom: 1.5rem !important;
+        }
+
+        select.custom-select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--elevation-2);
+        }
+
+        select.custom-select option {
+            background-color: var(--surface-color);
+            color: var(--text-main);
+            padding: 10px;
+        }
+
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: var(--elevation-2);
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+        }
+
+        .success-msg {
+            display: none;
+            padding: 15px;
+            background: rgba(76, 175, 80, 0.1);
+            color: var(--primary-color);
+            border-radius: var(--radius-md);
+            text-align: center;
+            border: 1px solid var(--primary-color);
+        }
+
+        /* ==========================================================================
+           15. FOOTER
+           ========================================================================== */
+        footer {
+            background: var(--surface-color);
+            padding: 3rem 0;
+            text-align: center;
+            border-top: 1px solid var(--divider);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: var(--bg-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+            box-shadow: var(--elevation-1);
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 992px) {
+            .about-grid, .contact-wrapper {
+                grid-template-columns: 1fr;
+            }
+            .hero h1 { font-size: 3rem; }
+        }
+
+
+@keyframes profileFloat {
+    0% {
+        transform: translateY(0);
+        box-shadow: var(--elevation-3); /* Shuru mein normal shadow */
+    }
+    50% {
+        transform: translateY(-15px); /* Beech mein photo thodi upar jayegi */
+        box-shadow: var(--elevation-2); /* Upar jaane par shadow thodi kam (soft) hogi */
+    }
+    100% {
+        transform: translateY(0);
+        box-shadow: var(--elevation-3);
+    }
+}
+
+
+/* ==========================================================================
+   HOME SECTION MASTER FIX (FINAL 100% WORKING FIX)
+   ========================================================================== */
+
+/* 1. Background hamesha dark rakho */
+#home {
+    background-color: #151a1f !important;
+}
+
+/* 2. Image ke upar ka sheesha (overlay) dark transparent rakho */
+#home::before, 
+#home::after, 
+.hero-overlay {
+    background: rgba(10, 15, 20, 0.75) !important; 
+}
+
+/* 3. Main Heading Gradient & Shadow Fix (Yahi main problem thi) */
+#home h1 {
+    /* Transparent color ko hatakar Bright White se Bright Green ka gradient force kiya */
+    background: linear-gradient(to right, #ffffff, #20c997) !important;
+    -webkit-background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    /* Transparent text par shadow ke liye text-shadow kaam nahi karta, filter use karna padta hai */
+    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.9)) !important;
+}
+
+/* 4. Subtitle/Paragraph ko clear, mota aur shadow ke sath rakho */
+#home p {
+    color: rgba(255, 255, 255, 0.95) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.95) !important; /* Force fill */
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.9) !important;
+    font-weight: 500 !important;
+}
+
+/* 5. Stats aur halke text ko light grey rakho */
+#home .stat-number {
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+#home .text-muted {
+    color: rgba(255, 255, 255, 0.8) !important;
+    -webkit-text-fill-color: rgba(255, 255, 255, 0.8) !important;
+}
+
+/* 6. Buttons ke piche shadow rakho taki wo clear dikhein */
+#home .btn {
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5) !important;
+}
+
+
+@media (max-width: 768px) {
+    /* --- 1. CORE LAYOUT FIXES --- */
+    html, body {
+        overflow-x: hidden !important;
+        width: 100vw !important;
+    }
+    .container {
+        width: 90% !important;
+        margin: 0 auto !important;
+        padding: 0 !important;
+    }
+    section { padding: 3rem 0; }
+
+    /* --- 2. NAVBAR & MENU --- */
+    .hamburger { display: block; }
+    .nav-links {
+        position: fixed;
+        top: 70px;
+        left: -100%;
+        width: 100%;
+        height: calc(100vh - 70px);
+        background: var(--surface-color);
+        flex-direction: column;
+        align-items: center;
+        padding-top: 2rem;
+        transition: left 0.3s ease;
+    }
+    .nav-links.active { left: 0; }
+
+    /* --- 3. TYPOGRAPHY & TEXT SIZES --- */
+    .section-header { margin-bottom: 2rem; }
+    .section-header h2 { font-size: 2rem; }
+    .section-header p { font-size: 0.95rem; line-height: 1.5; }
+    
+        /* --- HERO SECTION MOBILE FIX --- */
+    .hero-content { padding: 0 10px; } /* Text ko side se thoda breathing room dega */
+    
+    .hero h1 { 
+        font-size: 1.8rem !important; /* Heading ko chhota kiya taki kam lines banen */
+        line-height: 1.3 !important; 
+        margin-bottom: 1rem;
+    }
+    
+    .hero p { 
+        font-size: 0.95rem !important; /* Paragraph ko mobile friendly banaya */
+        line-height: 1.5 !important; 
+        margin-bottom: 1.5rem;
+    }
+    
+    .hero-buttons { flex-direction: column; gap: 10px; }
+    .btn { width: 100%; margin-bottom: 0; }
+
+
+    .about-text h3 { font-size: 1.6rem; }
+    .about-text p { font-size: 0.95rem; }
+
+    /* --- 4. TIMELINE MOBILE ALIGNMENT --- */
+    .timeline::after { left: 31px; }
+    .timeline-item { width: 100%; padding-left: 70px; padding-right: 25px; }
+    .timeline-item.left, .timeline-item.right { left: 0; }
+    .timeline-item::after { left: 21px; }
+    .timeline-item.right::after { left: 21px; }
+    
+    .timeline-content h3 { font-size: 1.25rem; margin-bottom: 0.5rem; }
+    .timeline-content p { font-size: 0.9rem; line-height: 1.5; }
+
+    /* --- 5. STATS & PRICING SIZES --- */
+    .stat-number { font-size: 2.5rem; }
+        .pricing-card .price > span:first-child { font-size: 2.8rem !important; }
+    .pricing-card .price > span:nth-child(2) { font-size: 1.2rem !important; }
+
+
+    /* --- 6. REVIEWS SLIDER & LEAVE REVIEW FORM --- */
+    #reviewsSlider {
+        width: 100% !important;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    .review-card {
+        min-width: 300px !important;
+        max-width: 100% !important;
+        flex-shrink: 0;
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+    #reviews .card[style*="max-width: 600px"] {
+        margin-left: auto !important;
+        margin-right: auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    /* --- 7. CONTACT FORM CENTERING & ZOOM FIX --- */
+    .contact-wrapper {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        width: 100% !important;
+    }
+    .contact-info, .contact-form-container {
+        width: 100% !important;
+    }
+    .contact-info .card, .contact-form {
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+    }
+    .form-control, .custom-select { font-size: 16px; padding: 12px; }
+    
+    /* Others */
+    .ba-container { aspect-ratio: 4/3; }
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- 1. STICKY NAVBAR -->
+    <header id="header">
+        <div class="container">
+            <nav>
+                <a href="#home" class="logo">Santanu.Visuals</a>
+                <div class="nav-links" id="navLinks">
+                    <a href="#home" class="active">Home</a>
+                    <a href="#about">About</a>
+                    <a href="#skills">Skills</a>
+                    <a href="#projects">Projects</a>
+                    <a href="#pricing">Pricing</a>
+                    <a href="#contact">Contact</a>
+                </div>
+                <div class="nav-controls">
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle Theme">
+                        <i class="fas fa-moon"></i>
+                    </button>
+                                        <button class="hamburger" id="hamburger" aria-label="Menu">
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                        <span class="bar"></span>
+                    </button>
+
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- 2. HERO SECTION -->
+    <section id="home" class="hero">
+        <div class="hero-slider" id="heroSlider">
+            <!-- Dynamic BG Images via JS -->
+        </div>
+        <div class="container hero-content reveal">
+            <h1>Hi, I'm Santanu. I Design High-CTR Thumbnails</h1>
+            <p>Cinematic, data-driven thumbnails that stop the scroll and turn casual viewers into loyal subscribers. Let's make your next upload impossible to ignore.</p>
+            <div class="hero-buttons">
+                <a href="#projects" class="btn btn-solid"><i class="fas fa-eye"></i> View Work</a>
+                <a href="#contact" class="btn"><i class="fas fa-paper-plane"></i> Hire Me</a>
+            </div>
+        </div>
+        <a href="#about" class="scroll-down">
+            <i class="fas fa-chevron-down"></i>
+        </a>
+    </section>
+
+    <!-- 3. ABOUT SECTION -->
+    <section id="about">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>About Me</h2>
+                <p>Meet Santanu: The strategist behind the clicks.</p>
+            </div>
+            <div class="about-grid">
+                <div class="about-image reveal">
+    <div class="profile-container">
+        <img src="my_profile.jpg" alt="Santanu Profile" class="profile-img">
+    </div>
+</div>
+
+                <div class="about-text reveal">
+                    <h3>Hi, I'm Santanu.</h3>
+                    <p>Over the last 5 years, I’ve refined my skills at the intersection of digital design and YouTube algorithm strategy. As a creator's partner, my goal is simple: I specialize in crafting visual hooks that demand absolute attention. I don't just make pretty pictures—I engineer clicks that drive real channel growth.</p>
+                    <ul class="about-points">
+                        <li><i class="fas fa-check-circle"></i> Proven track record of boosting channels to 15%+ CTR.</li>
+                        <li><i class="fas fa-check-circle"></i> Algorithm-focused designs driven by viewer psychology.</li>
+                        <li><i class="fas fa-check-circle"></i> The Santanu Guarantee: Premium delivery within 24-48 hours.</li>
+                        <li><i class="fas fa-check-circle"></i> Master of multiple niches (Challenge, Tech, Finance, Etc).</li>
+
+                    </ul>
+                   
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. SKILLS SECTION -->
+    <section id="skills">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>My Arsenal</h2>
+                <p>The premium toolkit Santanu uses to outsmart the YouTube algorithm</p>
+            </div>
+            <div class="skills-grid reveal">
+    <!-- Skill 1 -->
+    <div class="card skill-item">
+        <img src="Adobe Photoshop.png" alt="Adobe Photoshop" class="skill-logo">
+        <div class="skill-content">
+            <div class="skill-header">
+                <span>Adobe Photoshop</span>
+                <span>95%</span>
+            </div>
+            <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-width="95%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill 2 -->
+    <div class="card skill-item">
+        <img src="Adobe Illustrator.png" alt="Adobe Illustrator" class="skill-logo">
+        <div class="skill-content">
+            <div class="skill-header">
+                <span>Adobe Illustrator</span>
+                <span>90%</span>
+            </div>
+            <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-width="90%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill 3 -->
+    <div class="card skill-item">
+        <img src="Adobe Lightroom.png" alt="Adobe Lightroom" class="skill-logo">
+        <div class="skill-content">
+            <div class="skill-header">
+                <span>Adobe Lightroom</span>
+                <span>85%</span>
+            </div>
+            <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-width="85%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill 4 -->
+    <div class="card skill-item">
+        <img src="Capture One Pro.png" alt="Capture One Pro" class="skill-logo">
+        <div class="skill-content">
+            <div class="skill-header">
+                <span>Capture One Pro</span>
+                <span>80%</span>
+            </div>
+            <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-width="80%"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Skill 5 -->
+    <div class="card skill-item">
+        <img src="Affinity Photo.png" alt="Affinity Photo" class="skill-logo">
+        <div class="skill-content">
+            <div class="skill-header">
+                <span>Affinity Photo</span>
+                <span>75%</span>
+            </div>
+            <div class="skill-bar-bg">
+                <div class="skill-bar-fill" data-width="75%"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+        </div>
+    </section>
+
+        <!-- 5. PORTFOLIO SECTION -->
+    <section id="projects">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Featured Work</h2>
+                <p>Browse the gallery and see how a Santanu-crafted thumbnail transforms impressions into guaranteed clicks</p>
+            </div>
+
+            <!-- Grid -->
+            <div class="portfolio-grid">
+                <img src="image-1.jpg" alt="Thumbnail 1" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-2.jpg" alt="Thumbnail 2" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-3.jpg" alt="Thumbnail 3" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-4.jpg" alt="Thumbnail 4" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-5.jpg" alt="Thumbnail 5" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-6.jpg" alt="Thumbnail 6" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-7.jpg" alt="Thumbnail 7" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-8.jpg" alt="Thumbnail 8" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-9.jpg" alt="Thumbnail 9" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-10.jpg" alt="Thumbnail 10" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-11.jpg" alt="Thumbnail 11" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-12.jpg" alt="Thumbnail 12" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-13.jpg" alt="Thumbnail 13" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-14.jpg" alt="Thumbnail 14" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-15.jpg" alt="Thumbnail 15" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-16.jpg" alt="Thumbnail 16" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-17.jpg" alt="Thumbnail 17" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-18.jpg" alt="Thumbnail 18" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-19.jpg" alt="Thumbnail 19" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-20.jpg" alt="Thumbnail 20" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-21.jpg" alt="Thumbnail 21" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-22.jpg" alt="Thumbnail 22" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-23.jpg" alt="Thumbnail 23" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-24.jpg" alt="Thumbnail 24" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-25.jpg" alt="Thumbnail 25" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-26.jpg" alt="Thumbnail 26" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-27.jpg" alt="Thumbnail 27" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-28.jpg" alt="Thumbnail 28" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-29.jpg" alt="Thumbnail 29" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-30.jpg" alt="Thumbnail 30" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-31.jpg" alt="Thumbnail 31" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-32.jpg" alt="Thumbnail 32" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-33.jpg" alt="Thumbnail 33" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-34.jpg" alt="Thumbnail 34" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-35.jpg" alt="Thumbnail 35" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-36.jpg" alt="Thumbnail 36" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-37.jpg" alt="Thumbnail 37" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-38.jpg" alt="Thumbnail 38" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-39.jpg" alt="Thumbnail 39" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-40.jpg" alt="Thumbnail 40" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-41.jpg" alt="Thumbnail 41" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-42.jpg" alt="Thumbnail 42" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-43.jpg" alt="Thumbnail 43" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-44.jpg" alt="Thumbnail 44" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-45.jpg" alt="Thumbnail 45" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-46.jpg" alt="Thumbnail 46" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-47.jpg" alt="Thumbnail 47" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-48.jpg" alt="Thumbnail 48" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-49.jpg" alt="Thumbnail 49" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+                <img src="image-50.jpg" alt="Thumbnail 50" class="my-custom-thumb" loading="lazy" onclick="openModal(this.src)">
+            </div>
+        </div>
+    </section>
+
+
+
+    <!-- Modal for Full Image Preview -->
+    <div class="modal" id="imageModal">
+        <button class="modal-close" id="modalClose">&times;</button>
+        <img src="" alt="Preview" class="modal-content" id="modalImage">
+    </div>
+
+    <!-- 6. SCROLL STORY TIMELINE -->
+    <section id="journey">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>My Journey</h2>
+                <p>The Santanu Journey: Evolving from a passionate editor to a high-level CTR strategist</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item left reveal">
+                    <div class="timeline-content">
+                        <h3>2020: The Turning Point</h3>
+                        <p>While editing videos, I noticed a massive gap: great content was failing due to weak packaging. That’s when the Santanu journey pivoted, dedicating everything to mastering click-psychology.</p>
+
+                    </div>
+                </div>
+                <div class="timeline-item right reveal">
+                    <div class="timeline-content">
+                        <h3>2022: The 500k Breakthrough</h3>
+                        <p>Partnered with my first major 500k+ subscriber channel. By applying the Santanu strategy to their entire video archive, I successfully boosted their overall channel CTR by a solid 4%, driving millions of new views.</p>
+
+                    </div>
+                </div>
+                <div class="timeline-item left reveal">
+                    <div class="timeline-content">
+                        <h3>2024: The AI Evolution</h3>
+                        <p>To scale without sacrificing quality, I integrated advanced AI into the Santanu design workflow. This unlocked hyper-realistic custom assets, cutting my delivery times in half while doubling the visual impact for my clients.</p>
+
+                    </div>
+                </div>
+                <div class="timeline-item right reveal">
+                    <div class="timeline-content">
+                        <h3>2026: The Consulting Era</h3>
+                        <p>Today, Santanu Visuals operates at the highest level. I no longer just design thumbnails; I partner with elite creators as a full-scale packaging consultant—merging visual design with title psychology to guarantee clicks before a video is even filmed.</p>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+        <!-- 9. STATS SECTION -->
+    <section id="stats">
+        <div class="container">
+            <div class="card stats-grid reveal">
+                <div>
+                    <!-- Yahan Dekhiye: target sirf number hai, aur suffix mein '+' hai -->
+                    <div class="stat-number" data-target="1150" data-suffix="+">0</div>
+                    <div class="stat-label">Thumbnails Engineered</div>
+                </div>
+                <div>
+                    <!-- Agar Creators mein bhi '+' lagana hai toh aise -->
+                    <div class="stat-number" data-target="85" data-suffix="+">0</div>
+                    <div class="stat-label">Elite Creators Partnered</div>
+                </div>
+                <div>
+                    <div class="stat-number" data-target="18" data-suffix="%">0</div>
+                    <div class="stat-label">Avg. CTR Boost</div>
+                </div>
+                <div>
+                    <div class="stat-number" data-target="24" data-suffix="h">0</div>
+                    <div class="stat-label">Hour Rapid Delivery</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+
+        <!-- 7. PRICING SECTION -->
+    <section id="pricing">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Pricing Plans</h2>
+                <p>Don't just buy a thumbnail. Invest in a Santanu-engineered CTR</p>
+            </div>
+            <div class="pricing-grid reveal">
+                
+                <!-- Basic -->
+                <div class="card pricing-card">
+                    <h3>The Kickstart</h3>
+                    
+                    <!-- Dual Price Perfect Layout -->
+                    <div class="price" style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 1.5rem 0;">
+                        <span style="font-size: 3.5rem; line-height: 1; color: var(--text-main);">$3.23</span>
+                        <span style="font-size: 1.4rem; font-weight: 600; color: var(--primary-color);">₹300 <span style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);">/thumb</span></span>
+                    </div>
+
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i>1 High-Impact Concept</li>
+                        <li><i class="fas fa-check"></i>Pro Color & Lighting Pop</li>
+                        <li><i class="fas fa-check"></i>48-Hour Delivery</li>
+                        <li><i class="fas fa-times" style="color:var(--text-muted)"></i>Mobile-Optimized Layout</li>
+                    </ul>
+                    <a href="https://wa.me/916294183738?text=Hello%20Santanu,%20I%20am%20interested%20in%20the%20Starter%20Plan%20($3.23%20/%20₹300).%20Let's%20discuss%20details!" target="_blank" class="btn">Order Now</a>
+                </div>
+
+                <!-- Standard -->
+                <div class="card pricing-card highlight">
+                    <h3>The Santanu Signature</h3>
+                    
+                    <!-- Dual Price Perfect Layout -->
+                    <div class="price" style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 1.5rem 0;">
+                        <span style="font-size: 3.5rem; line-height: 1; color: var(--text-main);">$3.77</span>
+                        <span style="font-size: 1.4rem; font-weight: 600; color: var(--primary-color);">₹350 <span style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);">/thumb</span></span>
+                    </div>
+
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i>2 A/B Test Ready Concepts</li>
+                        <li><i class="fas fa-check"></i>Hyper-Realistic Compositing</li>
+                        <li><i class="fas fa-check"></i>Custom Graphic Elements</li>
+                        <li><i class="fas fa-check"></i>24-Hour Priority Delivery</li>
+                    </ul>
+                    <a href="https://wa.me/916294183738?text=Hello%20Santanu,%20I%20would%20like%20to%20order%20the%20Pro%20Creator%20Plan%20($3.77%20/%20₹350).%20Let's%20get%20started!" target="_blank" class="btn btn-solid">Order Now</a>
+                </div>
+
+                <!-- Premium -->
+                <div class="card pricing-card">
+                    <h3>The Santanu Elite Partner</h3>
+                    
+                    <!-- Dual Price Perfect Layout -->
+                    <div class="price" style="display: flex; flex-direction: column; align-items: center; gap: 5px; margin: 1.5rem 0;">
+                        <span style="font-size: 3.5rem; line-height: 1; color: var(--text-main);">$4.84</span>
+                        <span style="font-size: 1.4rem; font-weight: 600; color: var(--primary-color);">₹450 <span style="font-size: 0.9rem; font-weight: normal; color: var(--text-muted);">/mo</span></span>
+                    </div>
+
+                    <ul class="pricing-features">
+                        <li><i class="fas fa-check"></i>10 High-Conversion Thumbnails/mo</li>
+                        <li><i class="fas fa-check"></i>VIP Priority Revisions</li>
+                        <li><i class="fas fa-check"></i>Title & Concept Strategy</li>
+                        <li><i class="fas fa-check"></i>Dedicated 1-on-1 Support</li>
+                    </ul>
+                    <a href="https://wa.me/916294183738?text=Hello%20Santanu,%20I%20want%20to%20discuss%20the%20Agency%20Retainer%20Plan%20($4.84%20/%20₹450).%20Let's%20talk!" target="_blank" class="btn">Contact Me</a>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+
+    
+
+    <!-- 8. REVIEWS SECTION -->
+    <section id="reviews">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Client Feedback</h2>
+                <p>Hear it directly from the creators who trust the Santanu strategy</p>
+            </div>
+            <div class="reviews-slider reveal" id="reviewsSlider">
+                <!-- JS populated to allow auto-scroll -->
+            </div>
+
+            <!-- Review Add Karne Ka Form -->
+            <div class="card reveal" style="max-width: 600px; margin: 3rem auto 0; text-align: left;">
+                <h3 style="margin-bottom: 1.5rem;">Leave a Review</h3>
+                <form id="addReviewForm" class="contact-form">
+                    <input type="text" id="revName" class="form-control" placeholder="Your Name" required>
+                    <select id="revStars" class="custom-select" style="margin-bottom: 0;">
+    <option value="5">⭐⭐⭐⭐⭐ (5 Stars)</option>
+    <option value="4">⭐⭐⭐⭐ (4 Stars)</option>
+    <option value="3">⭐⭐⭐ (3 Stars)</option>
+    <option value="2">⭐⭐ (2 Stars)</option>
+    <option value="1">⭐ (1 Star)</option>
+</select>
+
+                    <textarea id="revText" class="form-control" placeholder="Write your feedback here..." rows="3" required></textarea>
+                    <button type="submit" class="btn btn-solid" style="width: 100%;">Submit Review</button>
+                </form>
+            </div>
+
+
+        </div>
+    </section>
+
+    <!-- 11. CONTACT SECTION -->
+    <section id="contact">
+        <div class="container">
+            <div class="section-header reveal">
+                <h2>Let's Work Together</h2>
+                <p>Ready to turn missed impressions into guaranteed clicks?</p>
+            </div>
+            <div class="contact-wrapper">
+                <div class="contact-info reveal">
+                    <div class="card">
+                        <h3>Let's Talk Strategy</h3>
+                        <p style="color:var(--text-muted); margin-bottom: 1.5rem;">Ready to upgrade your visual game? Drop a message via Email or WhatsApp for a priority response.</p>
+                        
+                                                <div class="contact-item" style="margin-bottom: 1.5rem;">
+                            <i class="fab fa-whatsapp"></i>
+                            <div>
+                                <h4>WhatsApp</h4>
+                                <a href="https://wa.me/916294183738?text=Hello%20Santanu,%20I%20want%20to%20discuss%20a%20thumbnail%20design%20project!" target="_blank" style="color:var(--text-muted); text-decoration: none;">+91 62941 83738</a>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-item">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email</h4>
+                                <a href="mailto:santanu.dev3@gmail.com?subject=Thumbnail%20Design%20Inquiry" style="color:var(--text-muted); text-decoration: none;">santanu.dev3@gmail.com</a>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+                <div class="contact-form-container reveal">
+                    <!-- Asli Working Contact Form -->
+<form action="https://formsubmit.co/santanu.dev3@gmail.com" method="POST" class="contact-form">
+    
+    <!-- Spam bots ko rokne ke liye (Hidden) -->
+    <input type="text" name="_honey" style="display:none">
+    
+    <!-- Captcha disable karne ke liye taki user ko pareshani na ho -->
+    <input type="hidden" name="_captcha" value="false">
+
+    <!-- Form Inputs (Dhyan rahe 'name' attribute zaroori hai email ke liye) -->
+    <input type="text" name="Name" class="form-control" placeholder="Name" required>
+    <input type="email" name="Email" class="form-control" placeholder="Email" required>
+    <textarea name="Message" class="form-control" placeholder="Message" rows="5" required></textarea>
+    
+    <button type="submit" class="btn btn-solid" style="width: 100%;">Send Message</button>
+</form>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 15. FOOTER -->
+    <footer>
+        <div class="container">
+            <h2 class="logo" style="margin-bottom: 1rem;">Santanu.Visuals</h2>
+            <div class="social-links" style="margin-top: 1.5rem;">
+    <a href="https://wa.me/916294183738?text=Hello%20Santanu,%20I%20saw%20your%20portfolio%20and%20want%20to%20discuss%20a%20project!" target="_blank" title="Chat on WhatsApp" style="font-size: 1.8rem; color: var(--primary-color);">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+</div>
+
+           <p style="margin-top: 1rem; opacity: 0.7;">&copy; 2026 Santanu.Visuals All rights reserved.</p>
+
+        </div>
+    </footer>
+
+    <!-- ==========================================================================
+         JAVASCRIPT
+         ========================================================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            /* --- Theme Toggle --- */
+            const themeToggle = document.getElementById('themeToggle');
+            const htmlEl = document.documentElement;
+            const themeIcon = themeToggle.querySelector('i');
+
+            themeToggle.addEventListener('click', () => {
+                const currentTheme = htmlEl.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                htmlEl.setAttribute('data-theme', newTheme);
+                
+                if (newTheme === 'light') {
+                    themeIcon.classList.remove('fa-moon');
+                    themeIcon.classList.add('fa-sun');
+                } else {
+                    themeIcon.classList.remove('fa-sun');
+                    themeIcon.classList.add('fa-moon');
+                }
+            });
+
+                        /* --- Mobile Menu Toggle (Smooth Animation Version) --- */
+            const hamburger = document.getElementById('hamburger');
+            const navLinks = document.getElementById('navLinks');
+            const navItems = navLinks.querySelectorAll('a');
+
+            // Button click karne par open/close
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active'); // Ye line X animation chalayegi
+            });
+
+            // Kisi link par click karne ke baad menu khud band ho jaye
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active'); // Wapas 3 line ban jayegi
+                });
+            });
+
+
+            /* --- Active Link Highlight on Scroll --- */
+            const sections = document.querySelectorAll('section');
+            
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    const sectionHeight = section.clientHeight;
+                    if (pageYOffset >= (sectionTop - 200)) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navItems.forEach(a => {
+                    a.classList.remove('active');
+                    if (a.getAttribute('href').includes(current)) {
+                        a.classList.add('active');
+                    }
+                });
+            });
+
+            /* --- Scroll Reveal Animations (Intersection Observer) --- */
+            const reveals = document.querySelectorAll('.reveal');
+            
+            const revealOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -50px 0px"
+            };
+
+            const revealObserver = new IntersectionObserver(function(entries, observer) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) return;
+                    entry.target.classList.add('active');
+                    
+                    // Specific trigger for skill bars
+                    if (entry.target.classList.contains('skills-grid')) {
+                        const bars = entry.target.querySelectorAll('.skill-bar-fill');
+                        bars.forEach(bar => {
+                            bar.style.width = bar.getAttribute('data-width');
+                        });
+                    }
+
+                    // Specific trigger for stats counters
+                    if (entry.target.classList.contains('stats-grid')) {
+                        const counters = entry.target.querySelectorAll('.stat-number');
+                        counters.forEach(counter => {
+                            const target = +counter.getAttribute('data-target');
+                            const suffix = counter.getAttribute('data-suffix') || '';
+                            const duration = 4000; // 4 seconds
+                            const increment = target / (duration / 16); // 60fps
+                            
+                            let current = 0;
+                            const updateCounter = () => {
+                                current += increment;
+                                if (current < target) {
+                                    counter.innerText = Math.ceil(current) + suffix;
+                                    requestAnimationFrame(updateCounter);
+                                } else {
+                                    counter.innerText = target + suffix;
+                                }
+                            };
+                            updateCounter();
+                        });
+                        observer.unobserve(entry.target); // Only animate once
+                    }
+                });
+            }, revealOptions);
+
+            reveals.forEach(reveal => revealObserver.observe(reveal));
+
+            /* --- Hero Slider (Fading Backgrounds) --- */
+            const heroSlider = document.getElementById('heroSlider');
+            const heroImages = [
+                'hero1.jpg',
+                'hero2.jpg',
+                'hero3.jpg',
+                'hero4.jpg',
+                'hero5.jpg',
+                'hero6.jpg'
+            ];
+            
+            heroImages.forEach((img, index) => {
+                const div = document.createElement('div');
+                div.className = `hero-slide ${index === 0 ? 'active' : ''}`;
+                div.style.backgroundImage = `url(${img})`;
+                heroSlider.appendChild(div);
+            });
+
+            const slides = document.querySelectorAll('.hero-slide');
+            let currentSlide = 0;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 5000);
+
+            
+
+            
+
+            
+
+                        /* --- Naya Functional Reviews Setup (With LocalStorage) --- */
+            const reviewsSlider = document.getElementById('reviewsSlider');
+            const addReviewForm = document.getElementById('addReviewForm');
+
+            // Default fake reviews (Taki shuru mein khali na dikhe)
+            const defaultReviews = [
+                { name: 'Rahul Verma', text: 'Santanu did a great job. The design was super clean and he delivered before the deadline. Highly recommended!', stars: 5 },
+                { name: 'Sarah Jenkins', text: 'Amazing work! He totally understood the vibe of my video. The colors pop out perfectly on the screen. Will definitely hire again.', stars: 5 },
+                { name: 'Amit Patel', text: 'Good experience overall. Santanu was very patient with my small revisions. The final thumbnail looks really awesome on mobile phones.', stars: 4 }
+            ];
+
+            // LocalStorage se reviews nikalo (Agar purane save hain toh wo lo, nahi toh default lo)
+            let savedReviews = JSON.parse(localStorage.getItem('myPortfolioReviews')) || defaultReviews;
+
+            // Screen par reviews dikhane ka function
+            function renderReviews() {
+                reviewsSlider.innerHTML = ''; // Pehle purana clear karo
+                
+                savedReviews.forEach(review => {
+                    const card = document.createElement('div');
+                    card.className = 'card review-card';
+                    
+                    let starsHtml = '';
+                    for(let i=0; i<5; i++) {
+                        starsHtml += `<i class="fas fa-star" style="color: ${i < review.stars ? '#FFC107' : 'var(--divider)'}"></i>`;
+                    }
+
+                                        // Naya Premium Card Structure
+                    card.innerHTML = `
+                        <div class="stars">${starsHtml}</div>
+                        <p>"${review.text}"</p>
+                        <div class="reviewer">
+                            <div class="reviewer-img">${review.name.charAt(0).toUpperCase()}</div>
+                            <div class="reviewer-info">
+                                <strong>${review.name}</strong>
+                                <span>Verified Client</span>
+                            </div>
+                        </div>
+                    `;
+
+                    reviewsSlider.appendChild(card);
+                });
+            }
+
+            // Pehli baar website khulne par render karo
+            renderReviews();
+
+            // Naya Review Add karne ka Logic
+            addReviewForm.addEventListener('submit', (e) => {
+                e.preventDefault(); // Page refresh hone se roko
+                
+                const btn = addReviewForm.querySelector('button');
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding...';
+                
+                setTimeout(() => {
+                    // Form se data lo
+                    const newName = document.getElementById('revName').value;
+                    const newStars = parseInt(document.getElementById('revStars').value);
+                    const newText = document.getElementById('revText').value;
+
+                    // Naya review array ke sabse aage (start mein) daalo
+                    savedReviews.unshift({
+                        name: newName,
+                        stars: newStars,
+                        text: newText
+                    });
+
+                    // Database (LocalStorage) mein save karo
+                    localStorage.setItem('myPortfolioReviews', JSON.stringify(savedReviews));
+
+                    // Screen update karo
+                    renderReviews();
+                    
+                    // Form ko wapas khali kar do
+                    addReviewForm.reset();
+                    btn.innerHTML = 'Submit Review';
+                    
+                    // Slider ko shuru mein scroll kar do taki naya review dikhe
+                    reviewsSlider.scrollLeft = 0;
+                }, 800); // Thoda loading effect ke liye 800ms ka delay
+            });
+
+                      
+
+
+
+
+           
+
+            
+
+        });
+
+        /* --- Naya Modal Logic (Image Badi Karne Ke Liye) --- */
+        // Ye function image click karne pe chalega
+        function openModal(imgSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImage = document.getElementById('modalImage');
+            if (modal && modalImage) {
+                modalImage.src = imgSrc;
+                modal.classList.add('active');
+                document.body.style.overflow = 'hidden'; // Piche ka scroll band karne ke liye
+            }
+        }
+
+        // Ye code Modal ko band (close) karne ke liye hai
+        document.addEventListener('DOMContentLoaded', () => {
+            const modal = document.getElementById('imageModal');
+            const modalClose = document.getElementById('modalClose');
+
+            if (modalClose && modal) {
+                // Cross (X) button par click karne se band hoga
+                modalClose.addEventListener('click', () => {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = 'auto'; // Scroll wapas chalu
+                });
+
+                // Image ke bahar black area mein click karne se band hoga
+                modal.addEventListener('click', (e) => {
+                    if (e.target === modal) {
+                        modal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                });
+            }
+        });
+
+
+                        /* --- Secret Admin Delete Trick (5 Taps on Logo) --- */
+            const navLogo = document.querySelector('header .logo'); // Navbar ka Santanu.Visuals logo
+            let tapCount = 0; // Taps ginne ke liye
+            let tapTimer; // Taps ke beech ka time check karne ke liye
+
+            navLogo.addEventListener('click', (e) => {
+                tapCount++; // Jitni baar click karoge, ginti badhegi
+                
+                clearTimeout(tapTimer); // Purana timer saaf karo
+                
+                // Agar lagatar 5 baar click ho gaya
+                if (tapCount === 5) {
+                    if(confirm('Admin Command: Kya aap saare custom reviews delete karke reset karna chahte hain?')) {
+                        localStorage.removeItem('myPortfolioReviews'); // Kachra saaf
+                        location.reload(); // Page refresh
+                    }
+                    tapCount = 0; // Ginti wapas zero
+                } else {
+                    // Agar user ne click karna rok diya, toh aadhe second (500ms) baad ginti wapas zero ho jayegi
+                    tapTimer = setTimeout(() => {
+                        tapCount = 0;
+                    }, 500); 
+                }
+            });
+
+
+
+
+    </script>
+</body>
+</html>
